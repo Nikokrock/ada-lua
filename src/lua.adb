@@ -255,6 +255,32 @@ package body Lua is
       end if;
    end Next;
 
+   -----------
+   -- PCall --
+   -----------
+
+   procedure PCall
+     (State    : Lua_State;
+      Nargs    : Integer := 0;
+      NResults : Integer := 0;
+      Err_Fun  : Integer := 0;
+      Context  : Integer := 0;
+      Cont_Fun : Lua_Function := null)
+   is
+      Result : constant Lua_Return_Code := PCall
+        (State, Nargs, NResults, Err_Fun, Context, Cont_Fun);
+
+   begin
+      if Result /= LUA_OK then
+         declare
+            Error_Msg : constant String := To_Ada (State, -1);
+         begin
+            Pop (State);
+            raise Lua_Error with Result'Img & ": " & Error_Msg;
+         end;
+      end if;
+   end PCall;
+
    ---------
    -- Pop --
    ---------

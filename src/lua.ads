@@ -563,6 +563,17 @@ package Lua is
       Context  : Integer := 0;
       Cont_Fun : Lua_Function := null)
       return Lua_Return_Code;
+   pragma Import (C, PCall, "lua_pcallk");
+
+   procedure PCall
+     (State    : Lua_State;
+      Nargs    : Integer := 0;
+      NResults : Integer := 0;
+      Err_Fun  : Integer := 0;
+      Context  : Integer := 0;
+      Cont_Fun : Lua_Function := null);
+   --  Same as PCall function except that a Lua_Error exception is raised in
+   --  case of error.
 
    function Yield
      (State    : Lua_State;
@@ -599,7 +610,7 @@ private
    pragma Import (C, New_User_Data, "lua_newuserdata");
    pragma Import (C, Raw_Seti, "lua_rawseti");
    pragma Import (C, Raw_Set, "lua_rawset");
-   pragma Import (C, PCall, "lua_pcallk");
+
    pragma Import (C, Call, "lua_callk");
    pragma Import (C, Set_Table, "lua_settable");
    pragma Import (C, Create_Table, "lua_createtable");
