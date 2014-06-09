@@ -1,0 +1,22 @@
+with "Lua";
+
+project Example1 is
+
+    for Languages use ("ada");
+
+    for Source_Dirs use ("src");
+    for Object_Dir use "obj";
+    for Main use ("main.adb");
+
+    package Compiler is
+       for Default_Switches("ada") use ("-O2",
+                                        "-gnat12",
+                                        "-gnatwa",
+                                        "-gnatyg");
+    end Compiler;
+
+    package Linker is
+       for Default_Switches("ada") use ("-L../..", "-llua");
+    end Linker;
+
+end Example1;
