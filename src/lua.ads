@@ -40,8 +40,9 @@ package Lua is
    subtype Lua_Float is Long_Float;
    subtype Lua_Index is Integer;
 
-   Lua_Type_Error : exception;
+   Lua_Type_Error     : exception;
    Lua_Override_Error : exception;
+   Lua_Error          : exception;
 
    ---------------------
    -- State Functions --
@@ -81,6 +82,13 @@ package Lua is
    --  has a wrong mode.
    --
    --  As lua_load, this function only loads the chunk; it does not run it.
+
+   procedure Load_File
+     (State    : Lua_State;
+      Filename : String;
+      Mode     : String := "");
+   --  Same as previous function except that Lua_Error exception is raised in
+   --  LUA_OK is not returned.
 
    procedure Open_Libs (State : Lua_State);
    --  Opens all standard Lua libraries into the given state.

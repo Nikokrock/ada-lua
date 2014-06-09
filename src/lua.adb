@@ -215,6 +215,28 @@ package body Lua is
       return Result;
    end Load_File;
 
+   ---------------
+   -- Load_File --
+   ---------------
+
+   procedure Load_File
+     (State    : Lua_State;
+      Filename : String;
+      Mode     : String := "")
+   is
+      Result : constant Lua_Return_Code := Load_File (State, Filename, Mode);
+
+   begin
+      if Result /= LUA_OK then
+         declare
+            Error_Msg : constant String := To_Ada (State, -1);
+         begin
+            Pop (State);
+            raise Lua_Error with Result'Img & ": " & Error_Msg;
+         end;
+      end if;
+   end Load_File;
+
    ----------
    -- Next --
    ----------
