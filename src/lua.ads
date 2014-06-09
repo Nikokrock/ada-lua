@@ -1,6 +1,5 @@
 with Interfaces.C; use Interfaces.C;
 with System;
-with Interfaces.C.Strings; use Interfaces.C.Strings;
 
 package Lua is
 
@@ -67,8 +66,8 @@ package Lua is
 
    function Load_File
      (State    : Lua_State;
-      Filename : chars_ptr;
-      Mode     : chars_ptr := Null_Ptr)
+      Filename : String;
+      Mode     : String := "")
       return Lua_Return_Code;
    --  Loads a file as a Lua chunk. This function uses Load to load the
    --  chunk in the file named filename. If filename is NULL, then it loads
@@ -614,7 +613,6 @@ private
    pragma Import (C, Set_User_Value, "lua_setuservalue");
    pragma Import (C, New_State, "luaL_newstate");
    pragma Import (C, Close, "lua_close");
-   pragma Import (C, Load_File, "luaL_loadfilex");
    pragma Import (C, Open_Libs, "luaL_openlibs");
    pragma Import (C, Get_Top, "lua_gettop");
    pragma Import (C, Set_Top, "lua_settop");

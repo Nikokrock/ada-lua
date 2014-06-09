@@ -1,3 +1,5 @@
+with Interfaces.C.Strings; use Interfaces.C.Strings;
+
 package body Lua is
 
    -----------------
@@ -176,6 +178,42 @@ package body Lua is
          return False;
       end if;
    end Is_User_Data;
+
+   ---------------
+   -- Load_File --
+   ---------------
+
+   function Load_File
+     (State    : Lua_State;
+      Filename : String;
+      Mode     : String := "")
+      return Lua_Return_Code
+   is
+      function Internal
+        (State    : Lua_State;
+         Filename : chars_ptr;
+         Mode     : chars_ptr)
+         return Lua_Return_Code;
+      pragma Import (C, Internal, "luaL_loadfilex");
+
+      Filename_Ptr : chars_ptr := New_String (Filename);
+      Mode_Ptr     : chars_ptr := Null_Ptr;
+      Result       : Lua_Return_Code;
+   begin
+      if Mode /= "" then
+         Mode_Ptr := New_String (Mode);
+      end if;
+
+      Result := Internal (State, Filename_Ptr, Mode_Ptr);
+
+      if Mode_Ptr /= Null_Ptr then
+         Free (Mode_Ptr);
+      end if;
+
+      Free (Filename_Ptr);
+
+      return Result;
+   end Load_File;
 
    ----------
    -- Next --
