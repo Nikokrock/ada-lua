@@ -3,8 +3,6 @@ generic
    type Ada_Type is private;
 package Lua.Ada_Types is
 
-
-
    procedure Push (State : Lua_State; Data : Ada_Type);
    --  Push an Ada_Type value as a UserData Lua Type. Note that the type name
    --  is saved as a user data value in order to be able to perform type check
