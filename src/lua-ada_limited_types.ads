@@ -45,7 +45,7 @@ generic
    type Ada_Type is limited private;
 package Lua.Ada_Limited_Types is
 
-   procedure Push (State : Lua_State; Data : Ada_Type);
+   procedure Push (State : Lua_State; Data : access Ada_Type);
    --  Push an Ada_Type value as a LightUserData Lua Type.
 
    function To_Ada

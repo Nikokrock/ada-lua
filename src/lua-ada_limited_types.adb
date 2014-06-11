@@ -37,9 +37,9 @@ package body Lua.Ada_Limited_Types is
    -- Push --
    ----------
 
-   procedure Push (State : Lua_State; Data : Ada_Type) is
+   procedure Push (State : Lua_State; Data : access Ada_Type) is
    begin
-      Push (State, Lua_Light_User_Data (Data'Address));
+      Push (State, Lua_Light_User_Data (Data.all'Address));
    end Push;
 
    ------------
