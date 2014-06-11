@@ -33,6 +33,23 @@ package body Lua.Ada_Limited_Types is
 
    package Conv is new System.Address_To_Access_Conversions (Ada_Type);
 
+   ------------------
+   -- New_Instance --
+   ------------------
+
+   function New_Instance (State : Lua_State) return Integer is
+      Arg_Num : constant Lua_Index := Get_Top (State);
+      Result  : constant access Ada_Type := new Ada_Type;
+   begin
+      if Arg_Num /= 0 then
+         Push (State, "no argument expected");
+         return Error (State);
+      end if;
+
+      Push (State, Result);
+      return 1;
+   end New_Instance;
+
    ----------
    -- Push --
    ----------

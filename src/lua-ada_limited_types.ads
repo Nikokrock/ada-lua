@@ -55,4 +55,9 @@ package Lua.Ada_Limited_Types is
    --  Get an Ada_Type value from the stack at position Index. No type check
    --  is performed.
 
+   function New_Instance (State : Lua_State) return Integer;
+   --  Function that can be registered in Lua to create new instance of
+   --  Ada_Type
+   pragma Convention (C, New_Instance);
+
 end Lua.Ada_Limited_Types;
