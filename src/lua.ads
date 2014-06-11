@@ -477,6 +477,17 @@ package Lua is
      (State : Lua_State;
       Name  : String;
       Fun   : Lua_Function);
+   --  Helper function to register a function inside lua state. Name is the
+   --  name in Lua global environment with which the function is associated to.
+   --  To ease create of hierarchies in the global environment, if Name
+   --  contains '.' then a hierarchy using Lua tables is created. For example:
+   --
+   --     Register (S, "a.b.c", My_Lua_Function'Access);
+   --
+   --  will create a global table called "a". The table "a" will contain a
+   --  table at index "b" and this last table will contain one element "b" set
+   --  to our function. Note that an error will be raised in case you try to
+   --  register twice at the same location.
 
    ------------
    -- Others --
@@ -585,6 +596,9 @@ package Lua is
    function Status (State : Lua_State) return Lua_Return_Code;
 
    function Error (State : Lua_State) return Integer;
+   --  Generates a Lua error. The error message (which can actually be a Lua
+   --  value of any type) must be on the stack top. This function does a long
+   --  jump, and therefore never returns.
 
    procedure Len (State : Lua_State; Index : Lua_Index);
 

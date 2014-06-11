@@ -448,18 +448,27 @@ package body Lua is
          end if;
       end loop;
 
-      Set_Field (State, -1, Name (Start .. Name'Last), Fun, Override => False);
+      if Start = Name'First then
+         --  This means that the function should registered at toplevel
+         Push_Closure (State, Fun);
+         Set_Global (State, Name);
 
-      for J in 1 .. Set_Table_Times loop
-         Set_Table (State, -3);
-      end loop;
+      else
+         --  At least one dot has been found so create a hierarchy
+         Set_Field (State, -1, Name (Start .. Name'Last),
+                    Fun, Override => False);
 
-      if Pop_Times > 0 then
-         Pop (State, Pop_Times);
-      end if;
+         for J in 1 .. Set_Table_Times loop
+            Set_Table (State, -3);
+         end loop;
 
-      if Need_Global then
-         Set_Global (State, Name (Global_First .. Global_Last));
+         if Pop_Times > 0 then
+            Pop (State, Pop_Times);
+         end if;
+
+         if Need_Global then
+            Set_Global (State, Name (Global_First .. Global_Last));
+         end if;
       end if;
    end Register_Function;
 
