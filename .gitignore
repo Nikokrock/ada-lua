@@ -4,3 +4,5 @@
 
 lib/*
 obj/*
+examples/*/obj
+build.gpr
