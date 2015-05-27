@@ -1,3 +1,6 @@
 *.o
 *.bexch
 *.ali
+
+lib/*
+obj/*
