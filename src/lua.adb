@@ -855,8 +855,9 @@ package body Lua is
      return Lua_Unsigned
    is
       Result_Signed  : constant Lua_Integer := To_Ada (State, Index);
-      Result : constant Lua_Unsigned := Lua_Unsigned (Result_Signed);
+      Result : Lua_Unsigned;
    begin
+      Result := Lua_Unsigned (Result_Signed);
       return Result;
    exception
       when Constraint_Error =>
