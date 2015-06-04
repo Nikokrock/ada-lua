@@ -130,6 +130,13 @@ package Lua is
    procedure Push_Value (State : Lua_State; Index : Lua_Index);
    --  Pushes a copy of the element at the given index onto the stack.
 
+   procedure Rotate
+     (State : Lua_State;
+      From : Lua_Index;
+      To : Lua_Index);
+   --  Moves the value at index From to index To
+   --  These values will be swapped
+    
    procedure Remove (State : Lua_State; Index : Lua_Index);
    --  Removes the element at the given valid index, shifting down the elements
    --  above this index to fill the gap. This function cannot be called with a
@@ -615,12 +622,6 @@ package Lua is
       Context  : Integer := 0;
       Cont_Fun : Lua_Function := null);
 
-   function Get_Context
-     (State   : Lua_State;
-      Context : Integer)
-      return int;
-   pragma Import (C, Get_Context, "lua_getctx");
-
    function PCall
      (State    : Lua_State;
       Nargs    : Integer := 0;
@@ -705,9 +706,7 @@ private
    pragma Import (C, Get_Top, "lua_gettop");
    pragma Import (C, Set_Top, "lua_settop");
    pragma Import (C, Push_Value, "lua_pushvalue");
-   pragma Import (C, Remove, "lua_remove");
-   pragma Import (C, Insert, "lua_insert");
-   pragma Import (C, Replace, "lua_replace");
+   pragma Import (C, Rotate, "lua_rotate");
    pragma Import (C, Copy, "lua_copy");
    pragma Import (C, Absolute_Index, "lua_absindex");
    pragma Inline (Check_Stack);
