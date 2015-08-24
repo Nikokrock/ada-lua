@@ -380,6 +380,41 @@ package body Lua is
       end if;
    end PCall;
 
+   ------------
+   -- Insert --
+   ------------
+   procedure Insert (State : Lua_State; Index : Lua_Index)
+   is
+   begin
+      -- lua.h definition
+      -- #define lua_insert(L,idx)	lua_rotate(L, (idx), 1)
+      Rotate (State, From => Index, To => 1);
+   end Insert;
+
+   ------------
+   -- Remove --
+   ------------
+   procedure Remove (State : Lua_State; Index : Lua_Index)
+   is
+   begin
+      -- lua.h definition
+      -- #define lua_remove(L,idx)	(lua_rotate(L, (idx), -1), lua_pop(L, 1))
+      Rotate (State, From => Index, To => -1);
+      Pop (State);
+   end Remove;
+
+   -------------
+   -- Replace --
+   -------------
+   procedure Replace (State : Lua_State; Index : Lua_Index)
+   is
+   begin
+      -- lua.h definition
+      -- #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
+      Copy (State, From => -1, To => Index);
+      Pop (State);
+   end Replace;
+   
    ---------
    -- Pop --
    ---------
@@ -433,11 +468,10 @@ package body Lua is
    ----------
 
    procedure Push (State : Lua_State; Data : Lua_Unsigned) is
+      Signed_Data : constant Lua_Integer := Lua_Integer (Data);
 
-      procedure Internal (State : Lua_State; Data : Lua_Unsigned);
-      pragma Import (C, Internal, "lua_pushunsigned");
    begin
-      Internal (State, Data);
+      Push (State, Signed_Data);
    end Push;
 
    ----------
@@ -779,7 +813,7 @@ package body Lua is
       Result  : constant Lua_Float := Internal (State, Index, Success);
    begin
       if Success = 0 then
-         raise Lua_Type_Error with "an integer was expected";
+         raise Lua_Type_Error with "an float was expected";
       end if;
 
       return Result;
@@ -818,23 +852,16 @@ package body Lua is
    function To_Ada
      (State   : Lua_State;
       Index   : Lua_Index)
-      return Lua_Unsigned
+     return Lua_Unsigned
    is
-      function Internal
-        (State   : Lua_State;
-         Index   : Lua_Index;
-         Success : in out Integer)
-         return Lua_Unsigned;
-      pragma Import (C, Internal, "lua_tounsignedx");
-
-      Success : Integer := 0;
-      Result  : constant Lua_Unsigned := Internal (State, Index, Success);
+      Result_Signed  : constant Lua_Integer := To_Ada (State, Index);
+      Result : Lua_Unsigned;
    begin
-      if Success = 0 then
-         raise Lua_Type_Error with "an integer was expected";
-      end if;
-
+      Result := Lua_Unsigned (Result_Signed);
       return Result;
+   exception
+      when Constraint_Error =>
+         raise Lua_Type_Error with "an unsigned integer was expected";
    end To_Ada;
 
    ------------
