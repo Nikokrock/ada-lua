@@ -386,8 +386,8 @@ package body Lua is
    procedure Insert (State : Lua_State; Index : Lua_Index)
    is
    begin
-      -- lua.h definition
-      -- #define lua_insert(L,idx)	lua_rotate(L, (idx), 1)
+      --  lua.h definition
+      --  #define lua_insert(L,idx)     lua_rotate(L, (idx), 1)
       Rotate (State, From => Index, To => 1);
    end Insert;
 
@@ -397,8 +397,8 @@ package body Lua is
    procedure Remove (State : Lua_State; Index : Lua_Index)
    is
    begin
-      -- lua.h definition
-      -- #define lua_remove(L,idx)	(lua_rotate(L, (idx), -1), lua_pop(L, 1))
+      --  lua.h definition
+      --  #define lua_remove(L,idx)     (lua_rotate(L,(idx),-1), lua_pop(L,1))
       Rotate (State, From => Index, To => -1);
       Pop (State);
    end Remove;
@@ -409,12 +409,12 @@ package body Lua is
    procedure Replace (State : Lua_State; Index : Lua_Index)
    is
    begin
-      -- lua.h definition
-      -- #define lua_replace(L,idx)	(lua_copy(L, -1, (idx)), lua_pop(L, 1))
+      --  lua.h definition
+      --  #define lua_replace(L,idx)    (lua_copy(L, -1, (idx)), lua_pop(L, 1))
       Copy (State, From => -1, To => Index);
       Pop (State);
    end Replace;
-   
+
    ---------
    -- Pop --
    ---------
