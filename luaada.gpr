@@ -1,4 +1,4 @@
-project Lua is
+project Luaada is
 
     for Languages use ("ada");
 
@@ -14,4 +14,4 @@ project Lua is
                                         "-gnatyg");
     end Compiler;
 
-end Lua;
+end Luaada;

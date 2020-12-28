@@ -1,0 +1,10 @@
+name = "luaada"
+version = "5.4.2"
+description = "An Ada binding for lua"
+maintainers = ["Felix Patschkowski <felix.patschkowski@nexperia.com>"]
+maintainers-logins = ["Patschkowski"]
+licenses = ["GPL 3.0"]
+project-files = ["luaada.gpr"]
+
+[[depends-on]]
+lua = "~5.4"
