@@ -5,3 +5,5 @@
 lib/*
 obj/*
 examples/*/obj
+alire/
+alire.lock
