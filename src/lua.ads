@@ -136,7 +136,7 @@ package Lua is
       To : Lua_Index);
    --  Moves the value at index From to index To
    --  These values will be swapped
-    
+
    procedure Remove (State : Lua_State; Index : Lua_Index);
    --  Removes the element at the given valid index, shifting down the elements
    --  above this index to fill the gap. This function cannot be called with a
